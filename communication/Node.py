@@ -49,6 +49,9 @@ class NodeDialog(QDialog):
         vbox.addWidget(self.comment_widget,10)
         self.setLayout(vbox)
 
+
+
+
     def createMenu(self,text):
         menu=QMenu(text)
         menu.addAction("新建")
@@ -57,28 +60,28 @@ class NodeDialog(QDialog):
         return menu
 
     def stepOperate(self,q):
-        if q.text =="新建":
-            print(q.text)
-        if q.text =="编辑":
-            print(q.text)
-        if q.text =="删除":
-            print(q.text)
+        if q.text() =="新建":
+            print(q.text())
+        if q.text() =="编辑":
+            print(q.text())
+        if q.text() =="删除":
+            print(q.text())
 
 
     def imageOperate(self,q):
-        if q.text =="新建":
+        if q.text() =="新建":
             print(q.text)
-        if q.text =="编辑":
+        if q.text() =="编辑":
             print(q.text)
-        if q.text =="删除":
+        if q.text() =="删除":
             print(q.text)
 
     def relationNodeOperate(self,q):
-        if q.text == "新建":
+        if q.text() == "新建":
             print(q.text)
-        if q.text == "编辑":
+        if q.text() == "编辑":
             print(q.text)
-        if q.text == "删除":
+        if q.text() == "删除":
             print(q.text)
 
 
