@@ -9,17 +9,18 @@ class RequestTools(object):
     '''
     # get方法封装
 
-    def get_method(self,url,data=None,header=None):
+    @classmethod
+    def get_method(clc,url,data=None,header=None):
 
         if header is not None:
            res = requests.get(url,params=data,headers=header)
         else:
            res = requests.get(url,params=data)
-        return res.json()
+        return res.json()["data"]
 
     # post方法封装
-
-    def post_method(self, url, data=None, header=None):
+    @classmethod
+    def post_method(clc, url, data=None, header=None):
         global res
         if header is not None:
             res = requests.post(url, json=data, headers=header)
@@ -33,7 +34,8 @@ class RequestTools(object):
             return res.text
 
     # put方法封装
-    def put_method(self,url,data=None,header=None):
+    @classmethod
+    def put_method(clc,url,data=None,header=None):
          if header is not None:
             res = requests.put(url,json=data,headers=header)
          else:
@@ -41,8 +43,8 @@ class RequestTools(object):
          return res.json()
 
    # delete方法封装
-
-    def delete_method(self, url, data=None, header=None):
+    @classmethod
+    def delete_method(clc, url, data=None, header=None):
          if header is not None:
             res = requests.delete(url, json=data, headers=header)
          else:
@@ -50,19 +52,20 @@ class RequestTools(object):
          return res.json()
 
 # 调用主方法
-
-    def send_requests(self,method,url,data=None,header=None):
+    @classmethod
+    def send_requests(clc,method,url,data=None,header=None):
           if method == 'get' or method == 'GET':
-             res = self.get_method(url,data,header)
+             res = clc.get_method(url,data,header)
           elif method == 'post' or method =='POST':
-             res = self.post_method(url,data,header)
+             res = clc.post_method(url,data,header)
           elif method == 'put' or method == 'PUT':
-             res = self.post_method(url,data,header)
+             res = clc.post_method(url,data,header)
           elif method == 'delete' or method == 'DELETE':
-             res = self.post_method(url,data,header)
+             res = clc.post_method(url,data,header)
           else:
              res = "请求方式有误！"
 
 
           res = json.loads(res)
           return res
+

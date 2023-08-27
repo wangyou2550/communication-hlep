@@ -4,14 +4,23 @@ from myqt.QTreeWidgetItem import QTreeWidgetItem
 
 from utils.JSONUtil import JSONUtil
 from communication.Section import Section
+from myreqeust.RequestTools import RequestTools
 
 
 
 class Home_Page(QWidget):
     def __init__(self):
         super().__init__()
-        self.menuData = JSONUtil.readJsonFile('communication/KnowledgeNode.json')
+        self.dns='http://localhost:8080/'
+        self.menuData=RequestTools.get_method(self.dns+'communication/chapter/list')
+        # self.menuData = JSONUtil.readJsonFile('communication/KnowledgeNode.json')
         self.initUI()
+
+    def showSection(self,data,item):
+        if data:
+            for section in data:
+                name1=str(section["chapterId"])+str(section["sort"])+":"+section["name"]
+                section_item=QTreeWidgetItem(item,name1,section["id"],0)
 
     # 递归遍历知识点
     def recursive_node_traversal(self, data, item):
@@ -34,12 +43,13 @@ class Home_Page(QWidget):
     def creatMenu(self, menuData):
         menu = QTreeWidget(self)
         # 添加树节点
-        menu.headerItem().setText(0, menuData["className"])
+        menu.headerItem().setText(0, "通信原理")
         # 树节点点击事件
         menu.itemClicked.connect(self.on_node_clicked)
-        for chapter in menuData["chapter"]:
-            chapter_item = QTreeWidgetItem(menu, chapter["name"] + chapter["alias"], chapter["id"],0)
-            self.recursive_node_traversal(chapter["node"], chapter_item)
+        for chapter in menuData:
+            chapter_item = QTreeWidgetItem(menu, chapter["name"], chapter["id"],0)
+            self.showSection(chapter["sections"],chapter_item)
+            # self.recursive_node_traversal(chapter["sections"], chapter_item)
         return menu
 
     def initUI(self):
