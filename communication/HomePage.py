@@ -5,14 +5,14 @@ from myqt.QTreeWidgetItem import QTreeWidgetItem
 from utils.JSONUtil import JSONUtil
 from communication.Section import Section
 from myreqeust.RequestTools import RequestTools
+from myreqeust.PathConstant import PathConstant
 
 
 
 class Home_Page(QWidget):
     def __init__(self):
         super().__init__()
-        self.dns='http://localhost:8080/'
-        self.menuData=RequestTools.get_method(self.dns+'communication/chapter/list')
+        self.menuData=RequestTools.get_method(PathConstant.GET_CHAPTER_LIST)
         # self.menuData = JSONUtil.readJsonFile('communication/KnowledgeNode.json')
         self.initUI()
 
@@ -35,7 +35,7 @@ class Home_Page(QWidget):
         print(item.id)
         if item.childCount()==0:
             # 小节
-            section=Section()
+            section=Section(item.id)
             self.tab_widget.addTab(section,item.name)
             # 设置为当前页面
             self.tab_widget.setCurrentWidget(section)
