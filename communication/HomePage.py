@@ -1,4 +1,6 @@
-from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QSpacerItem, QSizePolicy, QTreeWidget, QTabWidget
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QSpacerItem, QSizePolicy, QTreeWidget, QTabWidget, \
+    QDialog
 from PyQt5.uic.properties import QtWidgets
 from myqt.QTreeWidgetItem import QTreeWidgetItem
 
@@ -36,6 +38,8 @@ class Home_Page(QWidget):
         if item.childCount()==0:
             # 小节
             section=Section(item.id)
+            # dialog显示的信号槽
+            section.add_dialog_signal.connect(self.show_dialog_in_table_widget)
             self.tab_widget.addTab(section,item.name)
             # 设置为当前页面
             self.tab_widget.setCurrentWidget(section)
@@ -86,3 +90,9 @@ class Home_Page(QWidget):
             self.tab_widget.removeTab(index)
         else:
             pass
+
+    @pyqtSlot(QDialog)
+    def show_dialog_in_table_widget(self,dialog):
+        self.tab_widget.addTab(dialog,"abc")
+        # 设置为当前页面
+        self.tab_widget.setCurrentWidget(dialog)

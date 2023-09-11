@@ -1,4 +1,4 @@
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QGroupBox, QListWidget, QHBoxLayout, QPushButton, QStackedWidget, \
     QTextEdit, QWidget, QDesktopWidget, QMenu, QAction, QGridLayout, QFileDialog
 
@@ -14,6 +14,7 @@ from myreqeust.RequestTools import RequestTools
 
 
 class NodeDialog(QDialog):
+    add_dialog_signal = pyqtSignal(QDialog)
     def __init__(self, section_id,section_name, parent=None):
         super().__init__(parent)
         self.section_id=section_id
@@ -48,6 +49,7 @@ class NodeDialog(QDialog):
 
         self.createImageStackWidget()
         self.relation_node_list_widget = StepListWidget(steps=None)
+        self.relation_node_list_widget.add_dialog_signal.connect(self.show_dialog_in_table_widget)
         hbox2.addWidget(self.step_list_widget,10)
         hbox2.addWidget(self.image_stack_widget,80)
         hbox2.addWidget(self.relation_node_list_widget,10)
@@ -140,4 +142,6 @@ class NodeDialog(QDialog):
                     print("Image upload failed. Status code:", response.status_code)
                     return ''
 
-
+    @pyqtSlot(QDialog)
+    def show_dialog_in_table_widget(self, dialog):
+        self.add_dialog_signal.emit(dialog)

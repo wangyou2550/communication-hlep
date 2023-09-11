@@ -1,7 +1,7 @@
 # 小节py
-from PyQt5.QtCore import Qt
+from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox, QLineEdit, QPushButton, QSizePolicy, \
-    QSpacerItem, QTableView, QTreeWidget, QCheckBox
+    QSpacerItem, QTableView, QTreeWidget, QCheckBox, QDialog
 
 from communication.SectionDialog import SectionDialog
 from myqt.QTreeWidgetItem import QTreeWidgetItem
@@ -11,6 +11,7 @@ from communication.Node import NodeDialog
 from myreqeust.RequestTools import RequestTools
 from myreqeust.PathConstant import PathConstant
 class Section(QWidget):
+    add_dialog_signal=pyqtSignal(QDialog)
     def __init__(self,section_id):
         super().__init__()
         self.section_pid = section_id
@@ -115,7 +116,7 @@ class Section(QWidget):
         self.node_table_widget =QTreeWidget()
         self.node_table_widget.itemClicked.connect(self.on_node_clicked)
         self.node_table_widget.setColumnCount(7)
-        self.node_table_widget.setHeaderLabels(["id", "学习", "章节","名称","难度","重要程度","查看"])
+        self.node_table_widget.setHeaderLabels(["id", "学习", "章节","名称","重要程度","难度","查看"])
         self.recursive_section_traversal(self.section["childList"],self.node_table_widget)
 
 
@@ -124,8 +125,10 @@ class Section(QWidget):
         if isinstance(sender, InfoButton):
             print(sender.id)
             node_dialog=NodeDialog(sender.id,sender.name)
-            node_dialog.exec_()
-            node_dialog.setWindowState(self.windowState() | Qt.WindowMaximized)
+            node_dialog.add_dialog_signal.connect(self.show_dialog_in_table_widget)
+            self.add_dialog_signal.emit(node_dialog)
+            # node_dialog.exec_()
+            # node_dialog.setWindowState(self.windowState() | Qt.WindowMaximized)
 
 
 
@@ -150,3 +153,7 @@ class Section(QWidget):
         self.node_id=item.id
         self.node_pid=item.parent_id
         self.node_name=item.name
+
+    @pyqtSlot(QDialog)
+    def show_dialog_in_table_widget(self, dialog):
+        self.add_dialog_signal.emit(dialog)
