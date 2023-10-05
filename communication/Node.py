@@ -20,6 +20,7 @@ class NodeDialog(QDialog):
         self.section_id=section_id
         self.section_name=section_name
         self.current_step_id=0
+        self.title=section_name
         self.section=RequestTools.get_method(PathConstant.ADD_SECTION+"/"+str(section_id))
         self.initUI()
         self.resize_dialog()

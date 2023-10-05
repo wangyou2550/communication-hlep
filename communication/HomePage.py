@@ -93,6 +93,6 @@ class Home_Page(QWidget):
 
     @pyqtSlot(QDialog)
     def show_dialog_in_table_widget(self,dialog):
-        self.tab_widget.addTab(dialog,"abc")
+        self.tab_widget.addTab(dialog,dialog.title)
         # 设置为当前页面
         self.tab_widget.setCurrentWidget(dialog)

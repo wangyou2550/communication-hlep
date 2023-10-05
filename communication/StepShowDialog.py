@@ -13,6 +13,7 @@ class StepShowDialog(QDialog):
         super().__init__()
         self.step_id=step_id
         self.stepVo=RequestTools.get_method(PathConstant.GET_STEP+"/"+str(step_id))
+        self.title=self.stepVo["step"]["name"]
         self.setupUi()
         self.setWindowModality(Qt.ApplicationModal)
 
