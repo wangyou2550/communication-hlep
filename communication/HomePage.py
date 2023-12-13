@@ -1,4 +1,4 @@
-from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QSpacerItem, QSizePolicy, QTreeWidget, QTabWidget, \
     QDialog
 from PyQt5.uic.properties import QtWidgets
@@ -17,6 +17,7 @@ class Home_Page(QWidget):
         self.menuData=RequestTools.get_method(PathConstant.GET_CHAPTER_LIST)
         # self.menuData = JSONUtil.readJsonFile('communication/KnowledgeNode.json')
         self.initUI()
+
 
     def showSection(self,data,item):
         if data:
