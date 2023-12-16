@@ -1,6 +1,6 @@
 from PyQt5.QtCore import pyqtSlot, Qt
 from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QSpacerItem, QSizePolicy, QTreeWidget, QTabWidget, \
-    QDialog
+    QDialog, QAction
 from PyQt5.uic.properties import QtWidgets
 from myqt.QTreeWidgetItem import QTreeWidgetItem
 
@@ -8,7 +8,7 @@ from utils.JSONUtil import JSONUtil
 from communication.Section import Section
 from myreqeust.RequestTools import RequestTools
 from myreqeust.PathConstant import PathConstant
-
+from utils.singleton import singleton
 
 
 class Home_Page(QWidget):
@@ -17,6 +17,9 @@ class Home_Page(QWidget):
         self.menuData=RequestTools.get_method(PathConstant.GET_CHAPTER_LIST)
         # self.menuData = JSONUtil.readJsonFile('communication/KnowledgeNode.json')
         self.initUI()
+
+
+
 
 
     def showSection(self,data,item):
