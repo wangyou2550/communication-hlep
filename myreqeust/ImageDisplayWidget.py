@@ -13,7 +13,8 @@ class ImageDisplayWidget(QWidget):
 
         layout = QVBoxLayout(self)
         layout.addWidget(self.image_label)
-        self.set_image(image_path)
+        #关闭图片显示
+        # self.set_image(image_path)
         self.scale_slider = QSlider(Qt.Horizontal)
         self.scale_slider.setMinimum(10)
         self.scale_slider.setMaximum(12)
