@@ -14,7 +14,7 @@ class ImageDisplayWidget(QWidget):
         layout = QVBoxLayout(self)
         layout.addWidget(self.image_label)
         #关闭图片显示
-        # self.set_image(image_path)
+        self.set_image(image_path)
         self.scale_slider = QSlider(Qt.Horizontal)
         self.scale_slider.setMinimum(10)
         self.scale_slider.setMaximum(12)
@@ -22,13 +22,13 @@ class ImageDisplayWidget(QWidget):
         self.scale_slider.setTickInterval(1)
         self.scale_slider.setTickPosition(QSlider.TicksBelow)
         self.scale_slider.valueChanged.connect(self.scale_image)
-        layout.addWidget(self.scale_slider)
+        # layout.addWidget(self.scale_slider)
         self.setLayout(layout)
 
     def scale_image(self, scale_value):
         scale_factor = scale_value / 10.0  # Convert scale value to a factor between 1and 1.2
         self.scale_image2(scale_factor)
-
+    # 渲染图片
     def set_image(self, image_path):
         response = requests.get(image_path)
         if response.status_code == 200:
@@ -45,3 +45,5 @@ class ImageDisplayWidget(QWidget):
             int(self.image_label.height() * scale_factor),
             Qt.KeepAspectRatio
         ))
+
+

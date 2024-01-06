@@ -23,3 +23,11 @@ class PathConstant:
     ADD_IMAGE=DNS+"communication/image"
 
     ADD_RELATION_STEP=DNS+"communication/relationStep"
+
+
+    '''
+    问题相关api
+    '''
+    QUERY_QUESTION_LIST=DNS+"communication/question/list?chapter="
+    ADD_QUESTION=DNS+"communication/question"
+

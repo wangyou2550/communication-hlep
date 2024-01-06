@@ -1,6 +1,10 @@
+import os
+
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction, QLabel
 
 from communication.HomePage import Home_Page
+from question.ExercisePage import ExercisePage
 
 
 class MainWindow(QMainWindow):
@@ -10,6 +14,15 @@ class MainWindow(QMainWindow):
         self.initUI()
 
     def initUI(self):
+        # 设置应用程序图标
+        # 获取当前文件所在目录的绝对路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        # 构建图标文件的相对路径
+        icon_path = os.path.join(current_dir, "bupt.jpg")
+
+        # 设置应用程序图标
+        icon = QIcon(icon_path)
+        self.setWindowIcon(icon)
         # 创建工具栏
         toolbar = self.addToolBar("Toolbar")
 
@@ -56,7 +69,8 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.knowledge_wiget)
 
     def showExercisesWidget(self):
-        self.widget.setText("习题小部件")
+        self.exercise_widget=ExercisePage()
+        self.setCentralWidget(self.exercise_widget)
 
     def showPastPapersWidget(self):
         self.widget.setText("真题小部件")
