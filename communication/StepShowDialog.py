@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QHBoxLayout, QListWidget, QWidget, QStackedWidget
 
 from myqt.StepListWidgetItem import StepListWidgetItem
+from myreqeust.HttpTool import HttpTool
 from myreqeust.ImageDisplayWidget import ImageDisplayWidget
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
@@ -12,7 +13,7 @@ class StepShowDialog(QDialog):
     def __init__(self,step_id):
         super().__init__()
         self.step_id=step_id
-        self.stepVo=RequestTools.get_method(PathConstant.GET_STEP+"/"+str(step_id))
+        self.stepVo=HttpTool.get(PathConstant.GET_STEP+"/"+str(step_id))
         self.title=self.stepVo["step"]["name"]
         self.setupUi()
         self.setWindowModality(Qt.ApplicationModal)

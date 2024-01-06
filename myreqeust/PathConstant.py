@@ -31,3 +31,10 @@ class PathConstant:
     QUERY_QUESTION_LIST=DNS+"communication/question/list?chapter="
     ADD_QUESTION=DNS+"communication/question"
 
+    '''
+    登录有关的
+    '''
+    # 获取验证码
+    GET_CAPTCHAIMAGE=DNS+"captchaImage"
+    LOGIN=DNS+"login"
+

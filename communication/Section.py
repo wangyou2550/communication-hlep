@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox
 from communication.SectionDialog import SectionDialog
 from myqt.QTreeWidgetItem import QTreeWidgetItem
 from myqt.InfoButton import InfoButton
+from myreqeust.HttpTool import HttpTool
 from utils.JSONUtil import JSONUtil
 from communication.Node import NodeDialog
 from myreqeust.RequestTools import RequestTools
@@ -15,7 +16,7 @@ class Section(QWidget):
     def __init__(self,section_id):
         super().__init__()
         self.section_pid = section_id
-        self.section = RequestTools.get_method(PathConstant.GET_SECTION_CHILD + str(section_id))
+        self.section = HttpTool.get(PathConstant.GET_SECTION_CHILD + str(section_id))
         self.chapter_id=self.section["chapterId"]
         self.initUI()
 

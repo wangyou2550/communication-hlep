@@ -13,6 +13,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QDialog, QFileDialog
 
+from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
 
@@ -157,7 +158,7 @@ class Problem(QDialog):
         data["problemType"] = str(self.problem_comboBox.currentIndex())
         if self.image_src:
             data["imageSrc"]=self.image_src
-            RequestTools.post_method(PathConstant.ADD_QUESTION, data)
+            HttpTool.post(PathConstant.ADD_QUESTION, data)
         self.accept()
 
 # 显示在线图片

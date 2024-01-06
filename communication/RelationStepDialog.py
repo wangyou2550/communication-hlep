@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import QDialog
 
 from myqt.QTreeWidgetItem import QTreeWidgetItem
 from myqt.StepListWidgetItem import StepListWidgetItem
+from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
 
@@ -62,7 +63,8 @@ class RelationStepDialog(QDialog):
         self.image_label.setText(_translate("Dialog", "TextLabel"))
 
     def create_chapter_combox(self):
-        chapters=RequestTools.get_method(PathConstant.GET_CHAPTER_SIMPLE_LIST)
+        # chapters=RequestTools.get_method(PathConstant.GET_CHAPTER_SIMPLE_LIST)
+        chapters=HttpTool.get(PathConstant.GET_CHAPTER_SIMPLE_LIST)
         for chapter in chapters:
             self.comboBox.addItem(chapter["name"],str(chapter["id"]))
         self.comboBox.currentIndexChanged.connect(self.handle_selection_change)
@@ -72,7 +74,7 @@ class RelationStepDialog(QDialog):
         chapter_name=self.comboBox.currentText()
         # 先清空，在刷新
         self.section_treeWidget.clear()
-        sections=RequestTools.get_method(PathConstant.GET_SECTION_BY_CHAPTERID+"/"+chapter_id)
+        sections=HttpTool.get(PathConstant.GET_SECTION_BY_CHAPTERID+"/"+chapter_id)
         # 添加树节点
         self.section_treeWidget.headerItem().setText(0, chapter_name)
         # 树节点点击事件
@@ -89,7 +91,7 @@ class RelationStepDialog(QDialog):
 
     def on_section_clicked(self,item):
         section_id=item.id
-        section=RequestTools.get_method(PathConstant.GET_SECTION+"/"+str(section_id))
+        section=HttpTool.get(PathConstant.GET_SECTION+"/"+str(section_id))
         steps=section["steps"]
         self.step_listWidget.clear()
         if steps:
@@ -115,5 +117,5 @@ class RelationStepDialog(QDialog):
             data["stepId"]=self.step_id
             data["relationStepId"]=self.current_step_id
             data["relationStepName"]=self.current_step_name
-            RequestTools.post_method(PathConstant.ADD_RELATION_STEP, data)
+            HttpTool.post(PathConstant.ADD_RELATION_STEP, data)
         self.accept()

@@ -13,6 +13,7 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QPixmap
 from PyQt5.QtWidgets import QDialog, QFileDialog
 
+from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
 
@@ -118,5 +119,5 @@ class StepDialog(QDialog):
         data["sectionId"] = self.section_id
         if self.image_src:
             data["imageSrc"]=self.image_src
-            RequestTools.post_method(PathConstant.ADD_STEP, data)
+            HttpTool.post(PathConstant.ADD_STEP, data)
         self.accept()

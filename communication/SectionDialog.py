@@ -13,6 +13,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QApplication,  QDialog
 
+from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
 
@@ -104,5 +105,5 @@ class SectionDialog(QDialog):
         data["importance"]=importance
         data["difficulty"]=difficluty
         data["pid"]=self.pid
-        RequestTools.post_method(PathConstant.ADD_SECTION,data)
+        HttpTool.post(PathConstant.ADD_SECTION,data)
         self.accept()

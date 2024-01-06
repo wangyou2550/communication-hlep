@@ -8,6 +8,7 @@ import requests
 
 from myqt.StepListWidget import StepListWidget
 from myqt.StepListWidgetItem import StepListWidgetItem
+from myreqeust.HttpTool import HttpTool
 from myreqeust.ImageDisplayWidget import ImageDisplayWidget
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
@@ -21,7 +22,8 @@ class NodeDialog(QDialog):
         self.section_name=section_name
         self.current_step_id=0
         self.title=section_name
-        self.section=RequestTools.get_method(PathConstant.ADD_SECTION+"/"+str(section_id))
+        # self.section=RequestTools.get_method(PathConstant.ADD_SECTION+"/"+str(section_id))
+        self.section=HttpTool.get(PathConstant.ADD_SECTION+"/"+str(section_id))
         self.initUI()
         self.resize_dialog()
 
@@ -80,7 +82,7 @@ class NodeDialog(QDialog):
     # step点击，将当前step_id设置为目前值，显示图片值
     def step_clicked(self,item):
         self.current_step_id=item.id
-        stepVo=RequestTools.get_method(PathConstant.GET_STEP+"/"+str(item.id))
+        stepVo=HttpTool.get(PathConstant.GET_STEP+"/"+str(item.id))
         self.relation_node_list_widget.addStepItem(stepVo["relationSteps"])
 
     # 显示图片

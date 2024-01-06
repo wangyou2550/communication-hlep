@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QTreeWidget, QTabWidget, QWidget
 
 from myqt.QTreeWidgetItem import QTreeWidgetItem
+from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
 from question.Question import Question
@@ -13,7 +14,7 @@ class ExercisePage(QWidget):
         self.initUI()
     def initUI(self):
         # 创建siderbar,放章节
-        self.menuData = RequestTools.get_method(PathConstant.GET_CHAPTER_LIST)
+        self.menuData = HttpTool.get(PathConstant.GET_CHAPTER_LIST)
         hbox = QHBoxLayout(self)
         menu = self.creatMenu(self.menuData)
         hbox.addWidget(menu, 20)

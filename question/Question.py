@@ -3,6 +3,7 @@ from PyQt5.QtCore import Qt, pyqtSlot
 from PyQt5.QtGui import QColor
 from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QHBoxLayout
 
+from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
 from question.MultipleChoiceQuestion import MultipleChoiceQuestion
@@ -20,7 +21,7 @@ class Question(QMainWindow):
     def __init__(self,chapter_id):
         super().__init__()
         self.chapter_id=chapter_id
-        self.questions = RequestTools.get_method(PathConstant.QUERY_QUESTION_LIST + str(chapter_id))
+        self.questions = HttpTool.get(PathConstant.QUERY_QUESTION_LIST + str(chapter_id))
         self.current_question_index=0
 
         # 设置主窗口的整体布局
