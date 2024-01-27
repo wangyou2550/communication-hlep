@@ -1,4 +1,5 @@
-from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QTreeWidget, QTabWidget, QWidget
+from PyQt5.QtCore import pyqtSlot
+from PyQt5.QtWidgets import QMainWindow, QHBoxLayout, QTreeWidget, QTabWidget, QWidget, QDialog
 
 from myqt.QTreeWidgetItem import QTreeWidgetItem
 from myreqeust.HttpTool import HttpTool
@@ -56,7 +57,25 @@ class ExercisePage(QWidget):
         # 根据id获取知识点的内容
         print(item.id)
         question=Question(item.id)
+        question.add_dialog_signal.connect(self.show_dialog_in_table_widget)
+        question.add_question_signal.connect(self.show_question_in_table_widget)
         self.tab_widget.addTab(question,item.name)
         # 设置为当前页面
         self.tab_widget.setCurrentWidget(question)
 
+    @pyqtSlot(QDialog)
+    def show_dialog_in_table_widget(self,dialog):
+        self.tab_widget.addTab(dialog,dialog.title)
+        # 设置为当前页面
+        self.tab_widget.setCurrentWidget(dialog)
+    @pyqtSlot(int,int)
+    def show_question_in_table_widget(self,chapterId,index):
+        question = Question(chapterId,index)
+        question.add_dialog_signal.connect(self.show_dialog_in_table_widget)
+        question.add_question_signal.connect(self.show_question_in_table_widget)
+        #获取章节标题
+        url=PathConstant.GET_CHAPTER_BY_ID.replace("{id}",str(chapterId))
+        chapter=HttpTool.get(url)
+        self.tab_widget.addTab(question, chapter["name"])
+        # 设置为当前页面
+        self.tab_widget.setCurrentWidget(question)

@@ -1,6 +1,8 @@
 #题目提示
-from PyQt5.QtWidgets import QWidget, QVBoxLayout
+from PyQt5.QtCore import pyqtSlot, pyqtSignal
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDialog
 
+from communication.StepShowDialog import StepShowDialog
 from component.ButtonGroup import ButtonGroup
 from component.CrudButtons import CrudButtons
 from component.DifficlutLable import DifficultLables
@@ -11,6 +13,8 @@ from question.RelationSectionStepDialog import RelationSectionStepDialog
 
 
 class Hint(QWidget):
+    add_dialog_signal = pyqtSignal(QDialog)
+    add_question_signal=pyqtSignal(int,int)
     def __init__(self,question_id):
         super().__init__()
         # 题的序号
@@ -79,9 +83,24 @@ class Hint(QWidget):
         dialog.exec_()
     def show_rel_section(self,id):
         print(id)
+
+    @pyqtSlot(str)
     def show_rel_step(self,id):
-        print(id)
+        dialog=StepShowDialog(id)
+        dialog.add_dialog_signal.connect(self.show_dialog_in_table_widget)
+        self.add_dialog_signal.emit(dialog)
+
+    @pyqtSlot(str)
     def show_rel_question(self,id):
+        #获取题的章节，sort,新建一个Question,然后将添加到table
+        for question in self.hint["relQuestions"]:
+            if id==str(question["id"]):
+                # rel_question=Question(question["chapter"],question["sort"]-1)
+                self.add_question_signal.emit(question["chapter"],question["sort"]-1)
+
         print(id)
 
+    @pyqtSlot(QDialog)
+    def show_dialog_in_table_widget(self, dialog):
+        self.add_dialog_signal.emit(dialog)
 

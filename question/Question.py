@@ -1,7 +1,7 @@
 import sys
-from PyQt5.QtCore import Qt, pyqtSlot
+from PyQt5.QtCore import Qt, pyqtSlot, pyqtSignal
 from PyQt5.QtGui import QColor
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QHBoxLayout
+from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPushButton, QHBoxLayout, QDialog
 
 from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
@@ -12,6 +12,7 @@ from question.Solution import Solution
 
 
 class SidebarButton(QPushButton):
+
     def __init__(self, text):
         super().__init__(text)
         self.setFixedHeight(50)
@@ -20,13 +21,15 @@ class SidebarButton(QPushButton):
 
 
 class Question(QMainWindow):
-    def __init__(self,chapter_id):
+    add_dialog_signal = pyqtSignal(QDialog)
+    add_question_signal = pyqtSignal(int,int)
+    def __init__(self,chapter_id,current_index=0):
         super().__init__()
         self.chapter_id=chapter_id
         data={}
         data["chapter"]=chapter_id
         self.questions = HttpTool.get(PathConstant.QUERY_QUESTION_LIST ,data)
-        self.current_question_index=0
+        self.current_question_index=current_index
 
         # 设置主窗口的整体布局
         self.layout = QHBoxLayout()
@@ -61,6 +64,7 @@ class Question(QMainWindow):
         main_widget.setLayout(self.layout)
         self.setCentralWidget(main_widget)
         self.show()
+        self.show_title()
 
     def show_title(self):
         if len(self.questions)==0:
@@ -79,10 +83,17 @@ class Question(QMainWindow):
     def show_hint(self):
         if len(self.questions)!=0:
             content_widget=Hint(self.questions[self.current_question_index]["id"])
+            content_widget.add_dialog_signal.connect(self.show_dialog_in_table_widget)
+            content_widget.add_question_signal.connect(self.show_question_in_table_widget)
             # 删除占位部件并添加新的部件
             self.layout.itemAt(1).widget().deleteLater()
             self.layout.addWidget(content_widget)
-
+    @pyqtSlot(QDialog)
+    def show_dialog_in_table_widget(self, dialog):
+        self.add_dialog_signal.emit(dialog)
+    @pyqtSlot(int,int)
+    def show_question_in_table_widget(self, chapterId,index):
+        self.add_question_signal.emit(chapterId,index)
     def show_comments(self):
         self.show_content_widget('评论')
 

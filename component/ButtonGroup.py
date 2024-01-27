@@ -5,7 +5,7 @@ from base.IdButton import IdButton
 
 
 class ButtonGroup(QGroupBox):
-    button_click = pyqtSignal(int)
+    button_click = pyqtSignal(str)
     def __init__(self,text,data):
         super().__init__()
         self.text=text

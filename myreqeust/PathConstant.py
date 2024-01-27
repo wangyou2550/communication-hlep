@@ -3,6 +3,7 @@ class PathConstant:
     # DNS = "http://116.204.108.17:30504/"
     # chapter
     GET_CHAPTER_LIST=DNS+"communication/chapter/list"
+    GET_CHAPTER_BY_ID=DNS+"communication/chapter/{id}"
     GET_CHAPTER_SIMPLE_LIST=DNS+"communication/chapter/simple/list"
     # section
     GET_SECTION_CHILD=DNS+"communication/section/child/"

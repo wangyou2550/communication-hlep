@@ -29,10 +29,6 @@ class Solution(QMainWindow):
         if "imageSrc" in self.solution:
             self.solution_widget = ImageDisplayWidget(self.solution["imageSrc"])
             self.main_layout.addWidget(self.solution_widget)
-
-
-
-
         self.main_layout
 
 
