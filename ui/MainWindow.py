@@ -59,6 +59,7 @@ class MainWindow(QMainWindow):
 
         self.setWindowTitle("北邮通信原理")
 
+
     def showHomeWidget(self):
         # 创建一个初始的 widget
         self.widget = QLabel("欢迎使用主页面")

@@ -114,5 +114,6 @@ class LoginWindow(QWidget):
             HttpTool.save_token(data["token"])
             HttpTool.token=data["token"]
             self.close()
-            self.main_window.show()
+            # self.main_window.show()
+            self.main_window.showMaximized()  # 将窗口全屏显示
 

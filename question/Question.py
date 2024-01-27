@@ -6,7 +6,9 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPu
 from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
+from question.Hint import Hint
 from question.MultipleChoiceQuestion import MultipleChoiceQuestion
+from question.Solution import Solution
 
 
 class SidebarButton(QPushButton):
@@ -21,7 +23,9 @@ class Question(QMainWindow):
     def __init__(self,chapter_id):
         super().__init__()
         self.chapter_id=chapter_id
-        self.questions = HttpTool.get(PathConstant.QUERY_QUESTION_LIST + str(chapter_id))
+        data={}
+        data["chapter"]=chapter_id
+        self.questions = HttpTool.get(PathConstant.QUERY_QUESTION_LIST ,data)
         self.current_question_index=0
 
         # 设置主窗口的整体布局
@@ -73,13 +77,21 @@ class Question(QMainWindow):
             self.layout.addWidget(content_widget)
 
     def show_hint(self):
-        self.show_content_widget('提示')
+        if len(self.questions)!=0:
+            content_widget=Hint(self.questions[self.current_question_index]["id"])
+            # 删除占位部件并添加新的部件
+            self.layout.itemAt(1).widget().deleteLater()
+            self.layout.addWidget(content_widget)
 
     def show_comments(self):
         self.show_content_widget('评论')
 
     def show_solution(self):
-        self.show_content_widget('题解')
+        if len(self.questions) != 0:
+            content_widget = Solution(self.questions[self.current_question_index]["id"])
+            # 删除占位部件并添加新的部件
+            self.layout.itemAt(1).widget().deleteLater()
+            self.layout.addWidget(content_widget)
 
     def show_record(self):
         self.show_content_widget('题解')

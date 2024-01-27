@@ -28,8 +28,15 @@ class PathConstant:
     '''
     问题相关api
     '''
-    QUERY_QUESTION_LIST=DNS+"communication/question/list?chapter="
+    # QUERY_QUESTION_LIST=DNS+"communication/question/list?chapter="
+    QUERY_QUESTION_LIST=DNS+"communication/question/list"
     ADD_QUESTION=DNS+"communication/question"
+    QUERY_HINT=DNS+"communication/question/hint/"
+    ADD_REL_SECTION=DNS+"communication/quetionRelSection"
+    ADD_REL_STEP=DNS+"communication/relationQuestion"
+    ADD_REL_QUESTION=DNS+"communication/quesRelQues"
+    QUERY_SOLUTION=DNS+"communication/question/solution/"
+    ADD_SOLUTION=DNS+"communication/question/solution"
 
     '''
     登录有关的

@@ -36,7 +36,10 @@ class HttpTool:
             headers['Authorization'] = f"Bearer {HttpTool.token}"
 
         try:
-            response = requests.request(method, url, headers=headers, json=data)
+            if method=='GET':
+                response = requests.get(url, params=data)
+            else:
+                response = requests.request(method, url, headers=headers, json=data)
             response.raise_for_status()
             return HttpTool.deal_request(response.json())
         except requests.exceptions.RequestException as e:
@@ -44,8 +47,8 @@ class HttpTool:
             return None
 
     @staticmethod
-    def get(url):
-        return HttpTool.request('GET', url)
+    def get(url,params=None):
+        return HttpTool.request('GET', url,params)
 
     @staticmethod
     def post(url, data):
@@ -67,10 +70,10 @@ class HttpTool:
 
             if code == 200:
                 # 请求成功
-                data = response.get('data', None)
-                # 处理返回的数据
-                if data:
+                if 'data' in response:
+                    data = response.get('data', None)
                     return data
+                # 处理返回的数据
                 else:
                     return response
             elif code == 401:

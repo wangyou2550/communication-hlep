@@ -4,13 +4,18 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout
 from component.ButtonGroup import ButtonGroup
 from component.CrudButtons import CrudButtons
 from component.DifficlutLable import DifficultLables
+from myreqeust.HttpTool import HttpTool
+from myreqeust.PathConstant import PathConstant
+from question.RelQuetionDialog import RelQuetionDialog
+from question.RelationSectionStepDialog import RelationSectionStepDialog
 
 
 class Hint(QWidget):
-    def __init__(self,serial_number):
+    def __init__(self,question_id):
         super().__init__()
         # 题的序号
-        self.serial_number = serial_number
+        self.question_id = question_id
+        self.hint=HttpTool.get(PathConstant.QUERY_HINT+str(question_id))
 
         self.initUI()
     def initUI(self):
@@ -20,13 +25,16 @@ class Hint(QWidget):
         # 增删查改按钮
         self.create_crud_buttos()
         #增加标签
-        self.create_difficluty_label()
+        # self.create_difficluty_label()
         # 增加type
-        self.create_type_buttons()
-        #增加知识点清单列表
-        self.create_khnowledge_list()
-        #增加相似题目清单列表
-        self.create_simulate_question()
+        if self.hint:
+            self.create_type_buttons(self.hint["relSections"])
+            # 增加知识点清单列表
+            self.create_khnowledge_buttons(self.hint["relSteps"])
+            # 增加相似题目清单列表
+            self.create_simulate_question_buttons(self.hint["relQuestions"])
+
+
 
 
     def create_difficluty_label(self):
@@ -35,11 +43,45 @@ class Hint(QWidget):
 
 
     def create_crud_buttos(self):
-        self.khnowledge_crud_buttons = CrudButtons()
-        self.simulate_crud_buttons = CrudButtons()
-        self.main_layout.addWidget(self.khnowledge_crud_buttons)
-        self.main_layout.addWidget(self.simulate_crud_buttons)
+        # self.section_crud_buttons = CrudButtons('标签')
+        self.step_crud_buttons = CrudButtons('知识点')
+        self.question_crud_buttons = CrudButtons('相似题')
+        # self.section_crud_buttons.button_add.clicked.connect(self.add_rel_section)
+        self.step_crud_buttons.button_add.clicked.connect(self.add_rel_step)
+        self.question_crud_buttons.button_add.clicked.connect(self.add_rel_question)
+        # self.main_layout.addWidget(self.section_crud_buttons)
+        self.main_layout.addWidget(self.step_crud_buttons)
+        self.main_layout.addWidget(self.question_crud_buttons)
 
-    def create_type_buttons(self):
-        self.type_buttons=ButtonGroup("题目类型",[])
+    def create_type_buttons(self,data):
+        self.type_buttons=ButtonGroup('类型',data)
+        self.type_buttons.button_click.connect(self.show_rel_section)
+        self.main_layout.addWidget(self.type_buttons)
+
+    def create_khnowledge_buttons(self,data):
+        self.step_buttons=ButtonGroup('知识点',data)
+        self.step_buttons.button_click.connect(self.show_rel_step)
+        self.main_layout.addWidget(self.step_buttons)
+
+    def create_simulate_question_buttons(self,data):
+        self.question_buttons=ButtonGroup('相似题',data)
+        self.question_buttons.button_click.connect(self.show_rel_question)
+        self.main_layout.addWidget(self.question_buttons)
+
+    # def add_rel_section(self):
+    #     print(1)
+    def add_rel_step(self):
+        dialog=RelationSectionStepDialog(self.question_id)
+        dialog.exec_()
+
+    def add_rel_question(self):
+        dialog=RelQuetionDialog(self.question_id)
+        dialog.exec_()
+    def show_rel_section(self,id):
+        print(id)
+    def show_rel_step(self,id):
+        print(id)
+    def show_rel_question(self,id):
+        print(id)
+
 
