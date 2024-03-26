@@ -1,4 +1,7 @@
+import os
 import sys
+
+import pyotp
 from PyQt5.QtWidgets import QApplication, QWidget, QLabel, QLineEdit, QPushButton, QVBoxLayout, QCheckBox, QHBoxLayout
 from PyQt5.QtGui import QIcon, QPixmap, QPainter, QImage
 from PyQt5.QtCore import Qt
@@ -7,9 +10,13 @@ import string
 import base64
 
 from component.ClickableLabel import ClickableLabel
+from login.RegistWindow import RegisterWindow
 from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from ui.MainWindow import MainWindow
+
+
+
 
 
 class LoginWindow(QWidget):
@@ -57,11 +64,16 @@ class LoginWindow(QWidget):
 
         layout.addLayout(code_layout)
 
+        login_layout=QHBoxLayout()
+
 
         login_button = QPushButton('登录')
         login_button.clicked.connect(self.handle_login)
+        regist_button=QPushButton('没有账号去注册')
+        regist_button.clicked.connect(self.handle_regist)
+        regist_button.setObjectName("regist")
         layout.addWidget(login_button)
-
+        layout.addWidget(regist_button)
         self.setLayout(layout)
 
         self.setStyleSheet('''
@@ -86,6 +98,13 @@ class LoginWindow(QWidget):
                 background-color: #007bff;
                 color: white;
             }
+            
+            QPushButton#regist {
+                height: 38px;
+                font-size: 14px;
+                background-color: #4CAF50;;
+                color: white;
+            }
         ''')
 
     def generate_code_image(self):
@@ -108,12 +127,37 @@ class LoginWindow(QWidget):
         user["password"] = self.password_input.text()
         user["code"] = self.code_input.text()
         user["uuid"]=self.uuid
+        user["key"]=str(self.generate_otp(self.load_key()))
         data=HttpTool.post(PathConstant.LOGIN,user)
         # 存token
         if data:
             HttpTool.save_token(data["token"])
             HttpTool.token=data["token"]
+            self.save_user_info()
+
             self.close()
             # self.main_window.show()
             self.main_window.showMaximized()  # 将窗口全屏显示
 
+
+    def save_user_info(self):
+        data = HttpTool.get(PathConstant.GET_INFO)
+        HttpTool.user=data["user"]
+
+
+    def handle_regist(self):
+        self.regist_window=RegisterWindow()
+        self.regist_window.show()
+
+    def load_key(self):
+        # 获取用户账户目录的路径
+        user_dir = os.path.expanduser("~")
+        # 拼接文件路径
+        file_path = os.path.join(user_dir, "key.key")
+        with open(file_path, "r") as file:
+            key = file.read()
+        return key
+
+    def generate_otp(self,secret_key):
+        totp = pyotp.TOTP(secret_key)
+        return totp.now()

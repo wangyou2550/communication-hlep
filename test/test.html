@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>mxGraph Page</title>
+    <script src="https://www.example.com/qwebchannel.js"></script>
+    <script src="https://www.example.com/mxgraph.js"></script>
+    <script>
+        // 创建QWebChannel对象
+        var channel = new QWebChannel(qt.webChannelTransport, function(channel) {
+            // 将mxGraph的事件发送到Python
+            channel.objects.pythonObject.mxGraphEvent.connect(function(event) {
+                // 在这里处理mxGraph事件，可以调用Python函数来处理
+                console.log("Received mxGraph event:", event);
+                // TODO: 在这里调用Python函数处理事件
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- mxGraph的HTML元素 -->
+    <div id="graphContainer"></div>
+</body>
+</html>

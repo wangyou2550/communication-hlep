@@ -28,6 +28,11 @@ class StepListWidget(QListWidget):
             for step in steps:
                 self.addItem(StepListWidgetItem(step["relationStepName"],step["relationStepId"],None))
 
+    def addRelatedStepItem(self, steps):
+        self.clear()
+        if steps:
+            for step in steps:
+                self.addItem(StepListWidgetItem(step["name"], step["id"], None))
     @pyqtSlot(QDialog)
     def show_dialog_in_table_widget(self, dialog):
         self.add_dialog_signal.emit(dialog)

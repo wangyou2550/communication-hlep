@@ -18,6 +18,7 @@ class PathConstant:
     # 步骤
     ADD_STEP=DNS+"communication/step"
     GET_STEP=DNS+"communication/step"
+    QUERY_STEP=DNS+"communication/step/query"
     # 上传图片
     UPLOAD_IMAGE=DNS+"common/minio/upload"
     #新增知识点图片
@@ -45,4 +46,6 @@ class PathConstant:
     # 获取验证码
     GET_CAPTCHAIMAGE=DNS+"captchaImage"
     LOGIN=DNS+"login"
+    GET_INFO=DNS+"getInfo"
+    REGISTER=DNS+"regist"
 

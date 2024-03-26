@@ -1,0 +1,67 @@
+/* 设置整体背景 */
+QWidget {
+    background-color: #f2f2f2;
+}
+
+/* 设置标题样式 */
+QLabel#title_label {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333333;
+    margin-bottom: 20px;
+}
+
+/* 设置验证码样式 */
+QLabel#captcha_label {
+    margin-bottom: 10px;
+}
+
+QLineEdit#captcha_input {
+    height: 30px;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+}
+
+/* 设置输入框样式 */
+QLineEdit {
+    height: 30px;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+}
+
+/* 设置下拉框样式 */
+QComboBox {
+    height: 30px;
+    font-size: 14px;
+    padding: 5px;
+    border: 1px solid #cccccc;
+    border-radius: 3px;
+}
+
+/* 设置注册按钮样式 */
+QPushButton {
+    height: 30px;
+    font-size: 14px;
+    padding: 5px 20px;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    border-radius: 3px;
+}
+
+QPushButton:hover {
+    background-color: #45a049;
+}
+
+/* 设置提示框样式 */
+QMessageBox {
+    font-size: 14px;
+}
+
+QMessageBox QLabel {
+    color: #333333;
+}

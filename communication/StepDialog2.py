@@ -115,9 +115,10 @@ class StepDialog(QDialog):
     def add_step(self):
         data = {}
         data["name"] = self.name_lineEdit.text()
-        data["sort"] = self.sort_lineEdit.text()
+        data["sort"] = int(self.sort_lineEdit.text())
         data["sectionId"] = self.section_id
         if self.image_src:
             data["imageSrc"]=self.image_src
+            # RequestTools.post_method(PathConstant.ADD_STEP, data)
             HttpTool.post(PathConstant.ADD_STEP, data)
         self.accept()

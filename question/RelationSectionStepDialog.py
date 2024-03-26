@@ -54,6 +54,8 @@ class RelationSectionStepDialog(QDialog):
         self.retranslateUi(self)
         self.buttonBox.accepted.connect(self.add_relation_step) # type: ignore
         self.buttonBox.rejected.connect(self.reject) # type: ignore
+        # 出现第二章知识点
+        self.handle_selection_change(1)
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self, Dialog):

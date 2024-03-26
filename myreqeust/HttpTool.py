@@ -9,6 +9,7 @@ from PyQt5.QtCore import Qt
 
 class HttpTool:
     token = ''
+    user={}
 
     @staticmethod
     def load_token():
@@ -37,9 +38,14 @@ class HttpTool:
 
         try:
             if method=='GET':
-                response = requests.get(url, params=data)
+                response = requests.get(url,headers=headers, params=data)
+            elif method=='POST':
+                response = requests.post(url, headers=headers, json=data)
+            elif method=='PUT':
+                response = requests.put(url, headers=headers, json=data)
             else:
-                response = requests.request(method, url, headers=headers, json=data)
+                response = requests.delete(url, headers=headers)
+
             response.raise_for_status()
             return HttpTool.deal_request(response.json())
         except requests.exceptions.RequestException as e:

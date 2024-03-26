@@ -51,9 +51,11 @@ class RelationStepDialog(QDialog):
         self.image_label.setGeometry(QtCore.QRect(90, 440, 581, 231))
         self.image_label.setObjectName("image_label")
 
+
         self.retranslateUi(self)
         self.buttonBox.accepted.connect(self.add_relation_step) # type: ignore
         self.buttonBox.rejected.connect(self.reject) # type: ignore
+        self.handle_selection_change(0)
         QtCore.QMetaObject.connectSlotsByName(self)
 
     def retranslateUi(self, Dialog):

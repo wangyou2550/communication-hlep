@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QPu
 from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from myreqeust.RequestTools import RequestTools
+from question.Comment import CommentArea
 from question.Hint import Hint
 from question.MultipleChoiceQuestion import MultipleChoiceQuestion
 from question.Solution import Solution
@@ -95,7 +96,13 @@ class Question(QMainWindow):
     def show_question_in_table_widget(self, chapterId,index):
         self.add_question_signal.emit(chapterId,index)
     def show_comments(self):
-        self.show_content_widget('评论')
+        if len(self.questions) != 0:
+            content_widget = CommentArea()
+            # content_widget.add_dialog_signal.connect(self.show_dialog_in_table_widget)
+            # content_widget.add_question_signal.connect(self.show_question_in_table_widget)
+            # 删除占位部件并添加新的部件
+            self.layout.itemAt(1).widget().deleteLater()
+            self.layout.addWidget(content_widget)
 
     def show_solution(self):
         if len(self.questions) != 0:

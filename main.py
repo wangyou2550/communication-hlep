@@ -8,9 +8,9 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)  # 创建应用程序对象
 
     window = MainWindow()
-    # login=LoginWindow(window)
+    login=LoginWindow(window)
 
-    window.showMaximized()
-    # login.show()
+    # window.showMaximized()
+    login.show()
 
     sys.exit(app.exec_())  # 在主线程中退出

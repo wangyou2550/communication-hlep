@@ -2,6 +2,7 @@
 from PyQt5.QtCore import pyqtSlot, pyqtSignal
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QDialog
 
+from communication.StepSearchDialog import StepSearchDialog
 from communication.StepShowDialog import StepShowDialog
 from component.ButtonGroup import ButtonGroup
 from component.CrudButtons import CrudButtons
@@ -75,7 +76,8 @@ class Hint(QWidget):
     # def add_rel_section(self):
     #     print(1)
     def add_rel_step(self):
-        dialog=RelationSectionStepDialog(self.question_id)
+        # dialog=RelationSectionStepDialog(self.question_id)
+        dialog=StepSearchDialog(self.question_id,0)
         dialog.exec_()
 
     def add_rel_question(self):

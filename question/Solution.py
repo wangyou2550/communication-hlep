@@ -1,6 +1,7 @@
 from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMainWindow, QScrollArea
 
 from component.CrudButtons import CrudButtons
+from component.ImageViewer import ImageViewer
 from config.GlobalConstant import GlobalConstant
 from myreqeust.HttpTool import HttpTool
 from myreqeust.ImageDisplayWidget import ImageDisplayWidget
@@ -28,6 +29,7 @@ class Solution(QMainWindow):
         # 创建答案显示部分
         if "imageSrc" in self.solution:
             self.solution_widget = ImageDisplayWidget(self.solution["imageSrc"])
+            # self.solution_widget = ImageViewer(self.solution["imageSrc"])
             self.main_layout.addWidget(self.solution_widget)
         self.main_layout
 

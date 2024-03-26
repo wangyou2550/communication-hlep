@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLi
     QDockWidget, QScrollArea, QPushButton, QHBoxLayout
 
 from component.CrudButtons import CrudButtons
+from component.ImageViewer import ImageViewer
 from myreqeust.ImageDisplayWidget import ImageDisplayWidget
 from question.ChoiceButton import ChoiceButton
 from question.Problem import Problem
@@ -36,7 +37,8 @@ class MultipleChoiceQuestion(QMainWindow):
         self.main_layout.addWidget(self.question_crud_buttons)
         if self.questions:
             # 创建单选题主题部分
-            self.question_widget = ImageDisplayWidget(self.question["imageSrc"])
+            # self.question_widget = ImageDisplayWidget(self.question["imageSrc"])
+            self.question_widget = ImageViewer(self.question["imageSrc"])
             self.main_layout.addWidget(self.question_widget)
             # 选项
             self.add_choice_radio_button()
@@ -136,7 +138,9 @@ class MultipleChoiceQuestion(QMainWindow):
         # 更新选项
     def update_choice_radio_button(self):
         if self.question["problemType"] != "0":
-            self.remove_all_widget(self.choice_button_list_layout)
+            if hasattr(self,"choice_button_list_layout"):
+                if self.choice_button_list_layout:
+                    self.remove_all_widget(self.choice_button_list_layout)
         else:
             # 移除组件
             self.remove_all_widget(self.choice_button_list_layout)
