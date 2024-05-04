@@ -13,6 +13,7 @@ from component.ClickableLabel import ClickableLabel
 from login.RegistWindow import RegisterWindow
 from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
+from myreqeust.RequestTools import RequestTools
 from ui.MainWindow import MainWindow
 
 
@@ -109,7 +110,8 @@ class LoginWindow(QWidget):
 
     def generate_code_image(self):
         # 图像数据,base64
-        data=HttpTool.get(PathConstant.GET_CAPTCHAIMAGE)
+        data=RequestTools.get_method(PathConstant.GET_CAPTCHAIMAGE)
+        # data=HttpTool.get(PathConstant.GET_CAPTCHAIMAGE)
         self.image=data["img"]
         self.uuid=data["uuid"]
 
@@ -128,7 +130,8 @@ class LoginWindow(QWidget):
         user["code"] = self.code_input.text()
         user["uuid"]=self.uuid
         user["key"]=str(self.generate_otp(self.load_key()))
-        data=HttpTool.post(PathConstant.LOGIN,user)
+        data=RequestTools.post_method(PathConstant.LOGIN,user)
+        # data=HttpTool.post(PathConstant.LOGIN,user)
         # 存token
         if data:
             HttpTool.save_token(data["token"])

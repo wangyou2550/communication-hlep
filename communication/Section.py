@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QLabel, QComboBox
     QSpacerItem, QTableView, QTreeWidget, QCheckBox, QDialog
 
 from communication.SectionDialog import SectionDialog
+from config.GlobalConstant import GlobalConstant
 from myqt.QTreeWidgetItem import QTreeWidgetItem
 from myqt.InfoButton import InfoButton
 from myreqeust.HttpTool import HttpTool
@@ -34,9 +35,10 @@ class Section(QWidget):
         # # 创建一个弹性空间
         # spacer = QSpacerItem(0, 0, QSizePolicy.Expanding, QSizePolicy.Minimum)
         # self.hbox2.addItem(spacer)
-        self.create_operation_button()
-        vbox.addWidget(self.search_widget,10)
-        vbox.addWidget(self.opertion_widget,10)
+        if GlobalConstant.IS_ADMIN:
+            self.create_operation_button()
+            vbox.addWidget(self.search_widget,10)
+            vbox.addWidget(self.opertion_widget,10)
         vbox.addWidget(self.node_table_widget,80)
         self.setLayout(vbox)
 

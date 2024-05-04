@@ -107,12 +107,14 @@ class Question(QMainWindow):
     def show_solution(self):
         if len(self.questions) != 0:
             content_widget = Solution(self.questions[self.current_question_index]["id"])
+            content_widget.add_dialog_signal.connect(self.show_dialog_in_table_widget)
             # 删除占位部件并添加新的部件
             self.layout.itemAt(1).widget().deleteLater()
             self.layout.addWidget(content_widget)
 
     def show_record(self):
-        self.show_content_widget('题解')
+        print(1)
+        # self.show_content_widget('题解')
 
     def show_content_widget(self,text):
         content_widget = MultipleChoiceQuestion()

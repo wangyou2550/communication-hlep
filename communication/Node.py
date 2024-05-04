@@ -9,6 +9,7 @@ import requests
 from communication.StepSearchDialog import StepSearchDialog
 from component.ImageViewer import ImageViewer
 from component.ZoomableGraphicsView import ZoomableGraphicsView
+from config.GlobalConstant import GlobalConstant
 from myqt.StepListWidget import StepListWidget
 from myqt.StepListWidgetItem import StepListWidgetItem
 from myreqeust.HttpTool import HttpTool
@@ -24,6 +25,8 @@ class NodeDialog(QDialog):
         self.section_id=section_id
         self.section_name=section_name
         self.current_step_id=0
+        self.feedback_value = 0
+        self.favorite_value = 0
         self.title=section_name
         # self.section=RequestTools.get_method(PathConstant.ADD_SECTION+"/"+str(section_id))
         self.section=HttpTool.get(PathConstant.ADD_SECTION+"/"+str(section_id))
@@ -48,12 +51,15 @@ class NodeDialog(QDialog):
 
     def initUI(self):
         self.setWindowTitle(self.section_name)
+
         vbox= QVBoxLayout()
         stepWidget=QWidget()
         self.hbox2 = QHBoxLayout(stepWidget)
         self.step_list_widget=self.createStepList()
 
+        vbox.addLayout(self.create_feed_favorite_button(), 10)
         self.createImageStackWidget()
+
         vbox2=QVBoxLayout()
         self.relation_node_list_widget = StepListWidget(steps=None)
         self.relation_node_list_widget.add_dialog_signal.connect(self.show_dialog_in_table_widget)
@@ -67,8 +73,12 @@ class NodeDialog(QDialog):
         self.hbox2.addLayout(vbox2,10)
         # self.hbox2.addWidget(self.relation_node_list_widget,10)
         stepWidget.setLayout(self.hbox2)
-        vbox.addWidget(self.createButtons(),15)
+        if GlobalConstant.IS_ADMIN:
+            vbox.addWidget(self.createButtons(),15)
+
         vbox.addWidget(stepWidget,85)
+
+
         # self.comment_widget=QTextEdit(self)
         # vbox.addWidget(self.comment_widget,15)
         self.setLayout(vbox)
@@ -78,7 +88,9 @@ class NodeDialog(QDialog):
         self.image_widget = QStackedWidget(self)
         # 预加载第一张图片
         if len(self.section["steps"])>0:
+            self.current_step_id =self.section["steps"][0]["id"]
             self.image_widget = ImageViewer(self.section["steps"][0]["imageSrc"])
+            self.update_step_feedback_favorite(self.section["steps"][0])
             # self.image_stack_widget.addWidget(image_widget)
         # for step in self.section["steps"]:
         #     # image_widget=ImageDisplayWidget(step["imageSrc"])
@@ -100,8 +112,21 @@ class NodeDialog(QDialog):
     def step_clicked(self,item):
         self.current_step_id=item.id
         stepVo=HttpTool.get(PathConstant.GET_STEP+"/"+str(item.id))
+        self.update_step_feedback_favorite(stepVo["step"])
         self.relation_node_list_widget.addStepItem(stepVo["relationSteps"])
         self.related_node_list_widget.addRelatedStepItem(stepVo["relatedSteps"])
+
+    # 跟新题的收藏反馈
+    def update_step_feedback_favorite(self,step):
+        if step["feedback"]:
+            self.feedback_value = step["feedback"]
+        else:
+            self.feedback_value =0
+        if step["favorite"]:
+            self.favorite_value = step["favorite"]
+        else:
+            self.favorite_value =0
+        self.updateButtons()
 
     # 显示图片
     def image_display(self,i):
@@ -113,8 +138,52 @@ class NodeDialog(QDialog):
         # self.image_widget.updateImage(self.section["steps"][i]["imageSrc"])
         # self.image_stack_widget.setCurrentIndex(i)
 
+# 收藏反馈按钮
+    def create_feed_favorite_button(self):
+        layout = QHBoxLayout()
+
+        self.feedback_button = QPushButton()
+        self.feedback_button.clicked.connect(self.feedbackClicked)
+        layout.addWidget(self.feedback_button)
+
+        self.favorite_button = QPushButton()
+        self.favorite_button.clicked.connect(self.favoriteClicked)
+        layout.addWidget(self.favorite_button)
+
+        self.updateButtons()
+        return layout
+
+    def updateButtons(self):
+        if self.feedback_value == 0:
+            self.feedback_button.setText('反馈')
+            self.feedback_button.setStyleSheet("background-color: green;")
+        else:
+            self.feedback_button.setText('已反馈')
+            self.feedback_button.setStyleSheet("background-color: red;")
+
+        if self.favorite_value == 0:
+            self.favorite_button.setText('收藏')
+            self.favorite_button.setStyleSheet("background-color: green;")
+        else:
+            self.favorite_button.setText('已收藏')
+            self.favorite_button.setStyleSheet("background-color: red;")
 
 
+    def feedbackClicked(self):
+        self.feedback_value = 1-self.feedback_value
+        data={}
+        data["stepId"]=self.current_step_id
+        data["feedback"]=self.feedback_value
+        HttpTool.post(PathConstant.ADD_STEP_FEEDBACK_FAVORITE, data)
+        self.updateButtons()
+
+    def favoriteClicked(self):
+        self.favorite_value = 1-self.favorite_value
+        data={}
+        data["stepId"]=self.current_step_id
+        data["favorite"]=self.favorite_value
+        HttpTool.post(PathConstant.ADD_STEP_FEEDBACK_FAVORITE, data)
+        self.updateButtons()
 
 
 

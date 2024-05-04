@@ -1,5 +1,7 @@
-from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMainWindow, QScrollArea
+from PyQt5.QtCore import pyqtSlot, pyqtSignal
+from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMainWindow, QScrollArea, QDialog
 
+from communication.StepShowDialog import StepShowDialog
 from component.CrudButtons import CrudButtons
 from component.ImageViewer import ImageViewer
 from config.GlobalConstant import GlobalConstant
@@ -11,12 +13,14 @@ from question.SolutionDialog import SolutionDialog
 
 
 class Solution(QMainWindow):
+    add_dialog_signal = pyqtSignal(QDialog)
     def __init__(self,question_id):
         super().__init__()
         # 题的序号
         self.question_id = question_id
         self.solution=HttpTool.get(PathConstant.QUERY_SOLUTION+str(question_id))
         self.hint=Hint(question_id)
+        self.hint.step_buttons.button_click.connect(self.show_rel_step)
         self.initUI()
     def initUI(self):
         # 垂直布局,提示占比30%，新增按钮，显示图片的label
@@ -46,6 +50,16 @@ class Solution(QMainWindow):
         self.setCentralWidget(scroll_area)
 
         self.show()
+
+    @pyqtSlot(str)
+    def show_rel_step(self, id):
+        dialog = StepShowDialog(id)
+        dialog.add_dialog_signal.connect(self.show_dialog_in_table_widget)
+        self.add_dialog_signal.emit(dialog)
     def add_solution(self):
         dialog=SolutionDialog(self.question_id)
         dialog.exec_()
+
+    @pyqtSlot(QDialog)
+    def show_dialog_in_table_widget(self, dialog):
+        self.add_dialog_signal.emit(dialog)

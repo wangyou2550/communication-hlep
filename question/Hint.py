@@ -7,6 +7,7 @@ from communication.StepShowDialog import StepShowDialog
 from component.ButtonGroup import ButtonGroup
 from component.CrudButtons import CrudButtons
 from component.DifficlutLable import DifficultLables
+from config.GlobalConstant import GlobalConstant
 from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 from question.RelQuetionDialog import RelQuetionDialog
@@ -28,7 +29,8 @@ class Hint(QWidget):
         self.main_layout = QVBoxLayout()
         self.setLayout(self.main_layout)
         # 增删查改按钮
-        self.create_crud_buttos()
+        if GlobalConstant.IS_ADMIN:
+            self.create_crud_buttos()
         #增加标签
         # self.create_difficluty_label()
         # 增加type

@@ -4,12 +4,13 @@ import requests
 from PyQt5.QtWidgets import QApplication, QWidget, QMessageBox
 from PyQt5.QtCore import Qt
 
-# from login.LoginWindow import LoginWindow
+
 
 
 class HttpTool:
     token = ''
     user={}
+    k=0
 
     @staticmethod
     def load_token():
@@ -33,9 +34,11 @@ class HttpTool:
     @staticmethod
     def request(method, url, data=None):
         headers = {}
-        if HttpTool.token:
-            headers['Authorization'] = f"Bearer {HttpTool.token}"
-
+        token1=HttpTool.load_token()
+        # if HttpTool.token:
+        #     headers['Authorization'] = f"Bearer {HttpTool.token}"
+        if token1:
+            headers['Authorization'] = f"Bearer {token1}"
         try:
             if method=='GET':
                 response = requests.get(url,headers=headers, params=data)
@@ -47,7 +50,7 @@ class HttpTool:
                 response = requests.delete(url, headers=headers)
 
             response.raise_for_status()
-            return HttpTool.deal_request(response.json())
+            return HttpTool.deal_request(response.json(),method,url,data)
         except requests.exceptions.RequestException as e:
             print(f"HTTP request failed: {str(e)}")
             return None
@@ -69,12 +72,13 @@ class HttpTool:
         return HttpTool.request('DELETE', url)
 
     @staticmethod
-    def deal_request(response):
+    def deal_request(response,method,url,data):
         if response:
             code = response.get('code', None)
             message = response.get('msg', None)
 
             if code == 200:
+                HttpTool.k=0
                 # 请求成功
                 if 'data' in response:
                     data = response.get('data', None)
@@ -84,9 +88,12 @@ class HttpTool:
                     return response
             elif code == 401:
                 # Token 失效，需要重新登录
-                HttpTool.token = ''
-                QMessageBox.warning(
+                if HttpTool.k<5:
+                    HttpTool.k=HttpTool.k+1
+                    return HttpTool.request(method,url,data)
 
+                QMessageBox.warning(
+                    None,
                     '登录过期',
                     '登录过期，退出重新登录.'
                 )
@@ -107,9 +114,12 @@ class HttpTool:
         )
 
     @staticmethod
-    def show_login_page(self):
+    def show_login_page():
         print(123)
-        # 显示登录页面
-        # login=LoginWindow()
+        # app = QApplication.instance()
+        # if app is None:
+        #     app = QApplication(sys.argv)
+        # login = LoginWindow()  # 根据你的代码，可能需要调整为正确的登录窗口类
         # login.show()
+        # app.exec_()
 

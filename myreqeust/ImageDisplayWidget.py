@@ -66,8 +66,8 @@ class ImageDisplayWidget(QWidget):
         painter.drawText(self.pixmap.width() - painter.fontMetrics().width("北邮考研"), text_height, "北邮考研")
         painter.drawText(self.pixmap.width() - painter.fontMetrics().width("Q:3792836192"), 2 * text_height,
                          "Q:3792836192")
-        painter.drawText(self.pixmap.width() - painter.fontMetrics().width("25群:3792836192"), self.pixmap.height()-text_height,
-                         "25群:781889541")
+        painter.drawText(self.pixmap.width() - painter.fontMetrics().width("Q群:3792836192"), self.pixmap.height()-text_height,
+                         "Q群:781889541")
         painter.end()
 
         # 更新图片显示

@@ -5,6 +5,7 @@ from PyQt5.QtWidgets import QMainWindow, QAction, QLabel
 
 from communication.HomePage import Home_Page
 from question.ExercisePage import ExercisePage
+from question.PastPaperPage import PastPaperPage
 
 
 class MainWindow(QMainWindow):
@@ -74,10 +75,11 @@ class MainWindow(QMainWindow):
         self.setCentralWidget(self.exercise_widget)
 
     def showPastPapersWidget(self):
-        self.widget.setText("真题小部件")
+        self.pastpaper_widget = PastPaperPage()
+        self.setCentralWidget(self.pastpaper_widget)
 
     def showMockExamWidget(self):
-        self.widget.setText("模拟卷小部件")
+        print(1)
 
     def showTipsWidget(self):
-        self.widget.setText("技巧小部件")
+        print(1)

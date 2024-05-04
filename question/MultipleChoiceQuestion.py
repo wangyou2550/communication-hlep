@@ -6,6 +6,7 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLi
 
 from component.CrudButtons import CrudButtons
 from component.ImageViewer import ImageViewer
+from config.GlobalConstant import GlobalConstant
 from myreqeust.ImageDisplayWidget import ImageDisplayWidget
 from question.ChoiceButton import ChoiceButton
 from question.Problem import Problem
@@ -32,9 +33,10 @@ class MultipleChoiceQuestion(QMainWindow):
         # 创建主窗口的布局
         self.main_layout = QVBoxLayout()
         #创建题目的增删查改
-        self.question_crud_buttons = CrudButtons('题目')
-        self.question_crud_buttons.button_add.clicked.connect(self.add_question)
-        self.main_layout.addWidget(self.question_crud_buttons)
+        if GlobalConstant.IS_ADMIN:
+            self.question_crud_buttons = CrudButtons('题目')
+            self.question_crud_buttons.button_add.clicked.connect(self.add_question)
+            self.main_layout.addWidget(self.question_crud_buttons)
         if self.questions:
             # 创建单选题主题部分
             # self.question_widget = ImageDisplayWidget(self.question["imageSrc"])

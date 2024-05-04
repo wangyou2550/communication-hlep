@@ -1,8 +1,9 @@
 class PathConstant:
     DNS = "http://localhost:30504/"
-    # DNS = "http://116.204.108.17:30504/"
+    # DNS = "http://39.105.200.100:30999/"
     # chapter
     GET_CHAPTER_LIST=DNS+"communication/chapter/list"
+    GET_PAST_PAPER_LIST=DNS+"communication/chapter/pastpaper/list"
     GET_CHAPTER_BY_ID=DNS+"communication/chapter/{id}"
     GET_CHAPTER_SIMPLE_LIST=DNS+"communication/chapter/simple/list"
     # section
@@ -25,6 +26,8 @@ class PathConstant:
     ADD_IMAGE=DNS+"communication/image"
 
     ADD_RELATION_STEP=DNS+"communication/relationStep"
+
+    ADD_STEP_FEEDBACK_FAVORITE=DNS+"communication/stepFeedbackFavorite/insertAndUpdate"
 
 
     '''

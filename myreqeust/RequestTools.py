@@ -16,7 +16,10 @@ class RequestTools(object):
            res = requests.get(url,params=data,headers=header)
         else:
            res = requests.get(url,params=data)
-        return res.json()["data"]
+        if 'data' in res.json():
+            return res.json()["data"]
+        else:
+            return res.json()
 
     # post方法封装
     @classmethod
@@ -31,7 +34,7 @@ class RequestTools(object):
             return res.json()
 
         else:
-            return res.text
+            return res.json()
 
     # put方法封装
     @classmethod
