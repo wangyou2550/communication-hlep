@@ -1,2 +1,3 @@
 class GlobalConstant:
-    IS_ADMIN=True
+    IS_ADMIN=False
+    PAGE_SIZE=10

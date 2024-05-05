@@ -1,6 +1,6 @@
 class PathConstant:
-    DNS = "http://localhost:30504/"
-    # DNS = "http://39.105.200.100:30999/"
+    # DNS = "http://localhost:30504/"
+    DNS = "http://39.105.200.100:30999/"
     # chapter
     GET_CHAPTER_LIST=DNS+"communication/chapter/list"
     GET_PAST_PAPER_LIST=DNS+"communication/chapter/pastpaper/list"
@@ -20,6 +20,7 @@ class PathConstant:
     ADD_STEP=DNS+"communication/step"
     GET_STEP=DNS+"communication/step"
     QUERY_STEP=DNS+"communication/step/query"
+    QUERY_STEP_PAGE=DNS+"communication/step/page"
     # 上传图片
     UPLOAD_IMAGE=DNS+"common/minio/upload"
     #新增知识点图片
@@ -28,6 +29,7 @@ class PathConstant:
     ADD_RELATION_STEP=DNS+"communication/relationStep"
 
     ADD_STEP_FEEDBACK_FAVORITE=DNS+"communication/stepFeedbackFavorite/insertAndUpdate"
+    QUERY_PROBLEM_PAGE = DNS + "communication/step/page"
 
 
     '''
@@ -42,6 +44,10 @@ class PathConstant:
     ADD_REL_QUESTION=DNS+"communication/quesRelQues"
     QUERY_SOLUTION=DNS+"communication/question/solution/"
     ADD_SOLUTION=DNS+"communication/question/solution"
+
+    ADD_PROBLEM_FEEDBACK_FAVORITE=DNS+"communication/problemFeedbackFavorite"
+    GET_PROBLEM_FEEDBACK_FAVORITE=DNS+"communication/problemFeedbackFavorite/"
+    QUERY_PROBLEM_PAGE = DNS + "communication/problemFeedbackFavorite/page"
 
     '''
     登录有关的

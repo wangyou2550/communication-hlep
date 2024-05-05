@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QWidget, QVBoxLayout, QMainWindow, QScrollArea, QDia
 
 from communication.StepShowDialog import StepShowDialog
 from component.CrudButtons import CrudButtons
+from component.FeedbackFavoriteError import FFE_Widget
 from component.ImageViewer import ImageViewer
 from config.GlobalConstant import GlobalConstant
 from myreqeust.HttpTool import HttpTool
@@ -25,7 +26,11 @@ class Solution(QMainWindow):
     def initUI(self):
         # 垂直布局,提示占比30%，新增按钮，显示图片的label
         self.main_layout = QVBoxLayout()
-        self.main_layout.addWidget(self.hint,30)
+        self.ffe_widget = FFE_Widget(
+            HttpTool.get(PathConstant.GET_PROBLEM_FEEDBACK_FAVORITE + str(self.question_id)),self.question_id)
+        self.main_layout.addWidget(self.ffe_widget, 10)
+
+        self.main_layout.addWidget(self.hint,20)
         if GlobalConstant.IS_ADMIN:
             self.curdButtons=CrudButtons('答案')
             self.curdButtons.button_add.clicked.connect(self.add_solution)
@@ -49,7 +54,7 @@ class Solution(QMainWindow):
         # 设置主窗口的中心部件
         self.setCentralWidget(scroll_area)
 
-        self.show()
+        # self.show()
 
     @pyqtSlot(str)
     def show_rel_step(self, id):

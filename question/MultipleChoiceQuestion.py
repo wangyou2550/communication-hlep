@@ -5,9 +5,12 @@ from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QWidget, QLi
     QDockWidget, QScrollArea, QPushButton, QHBoxLayout
 
 from component.CrudButtons import CrudButtons
+from component.FeedbackFavoriteError import FFE_Widget
 from component.ImageViewer import ImageViewer
 from config.GlobalConstant import GlobalConstant
+from myreqeust.HttpTool import HttpTool
 from myreqeust.ImageDisplayWidget import ImageDisplayWidget
+from myreqeust.PathConstant import PathConstant
 from question.ChoiceButton import ChoiceButton
 from question.Problem import Problem
 from question.QuestionButtonGroup import QuestionButtonGroup
@@ -36,12 +39,15 @@ class MultipleChoiceQuestion(QMainWindow):
         if GlobalConstant.IS_ADMIN:
             self.question_crud_buttons = CrudButtons('题目')
             self.question_crud_buttons.button_add.clicked.connect(self.add_question)
-            self.main_layout.addWidget(self.question_crud_buttons)
+            self.main_layout.addWidget(self.question_crud_buttons,10)
         if self.questions:
+            # 创建反馈，收藏框
+            self.ffe_widget=FFE_Widget(HttpTool.get(PathConstant.GET_PROBLEM_FEEDBACK_FAVORITE+str(self.question["id"])),self.question["id"])
+            self.main_layout.addWidget(self.ffe_widget,10)
             # 创建单选题主题部分
             # self.question_widget = ImageDisplayWidget(self.question["imageSrc"])
             self.question_widget = ImageViewer(self.question["imageSrc"])
-            self.main_layout.addWidget(self.question_widget)
+            self.main_layout.addWidget(self.question_widget,70)
             # 选项
             self.add_choice_radio_button()
 
@@ -149,7 +155,7 @@ class MultipleChoiceQuestion(QMainWindow):
             # 重新渲染
             for serial_number in list(range(self.question["sort"], self.question["sort"] + self.question["choiceNum"])):
                 self.choice_button_list_layout.addWidget(ChoiceButton(serial_number))
-
+        self.ffe_widget.update_step_feedback_favorite(HttpTool.get(PathConstant.GET_PROBLEM_FEEDBACK_FAVORITE+str(self.question["id"])))
 
     def remove_all_widget(self,layout):
         # 移除布局中的所有小部件

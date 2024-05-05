@@ -2,6 +2,7 @@ from PyQt5.QtCore import Qt, pyqtSignal, pyqtSlot
 from PyQt5.QtWidgets import QDialog, QVBoxLayout, QGroupBox, QListWidget, QHBoxLayout, QPushButton, QStackedWidget, \
     QTextEdit, QWidget, QDesktopWidget, QMenu, QAction, QGridLayout, QFileDialog
 
+from communication.FeedbackDialog import Feedback_Dialog
 from communication.RelationStepDialog import RelationStepDialog
 from communication.StepDialog2 import StepDialog
 import requests
@@ -174,7 +175,12 @@ class NodeDialog(QDialog):
         data={}
         data["stepId"]=self.current_step_id
         data["feedback"]=self.feedback_value
-        HttpTool.post(PathConstant.ADD_STEP_FEEDBACK_FAVORITE, data)
+        # //取消反馈，直接点击就可以
+        if self.feedback_value==0:
+            HttpTool.post(PathConstant.ADD_STEP_FEEDBACK_FAVORITE, data)
+        else:
+            feedDialog=Feedback_Dialog(data,1)
+            feedDialog.exec_()
         self.updateButtons()
 
     def favoriteClicked(self):

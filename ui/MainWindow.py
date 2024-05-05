@@ -3,6 +3,7 @@ import os
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QMainWindow, QAction, QLabel
 
+from center.PersonalCenter import PersonCenter
 from communication.HomePage import Home_Page
 from question.ExercisePage import ExercisePage
 from question.PastPaperPage import PastPaperPage
@@ -56,6 +57,10 @@ class MainWindow(QMainWindow):
         tips_action = QAction("技巧", self)
         tips_action.triggered.connect(self.showTipsWidget)
         toolbar.addAction(tips_action)
+        # 创建个人中心按钮并添加到工具栏
+        personal_center_action = QAction("个人中心", self)
+        personal_center_action.triggered.connect(self.show_personal_center)
+        toolbar.addAction(personal_center_action)
         self.showHomeWidget()
 
         self.setWindowTitle("北邮通信原理")
@@ -77,6 +82,10 @@ class MainWindow(QMainWindow):
     def showPastPapersWidget(self):
         self.pastpaper_widget = PastPaperPage()
         self.setCentralWidget(self.pastpaper_widget)
+
+    def show_personal_center(self):
+        self.personal_center_widget = PersonCenter()
+        self.setCentralWidget(self.personal_center_widget)
 
     def showMockExamWidget(self):
         print(1)
