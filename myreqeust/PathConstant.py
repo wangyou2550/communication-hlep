@@ -1,6 +1,6 @@
 class PathConstant:
-    # DNS = "http://localhost:30504/"
-    DNS = "http://39.105.200.100:30999/"
+    DNS = "http://localhost:30504/"
+    # DNS = "http://39.105.200.100:30999/"
     # chapter
     GET_CHAPTER_LIST=DNS+"communication/chapter/list"
     GET_PAST_PAPER_LIST=DNS+"communication/chapter/pastpaper/list"

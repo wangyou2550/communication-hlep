@@ -12,6 +12,7 @@ import hashlib
 import pyotp
 import os
 
+from myreqeust.RequestTools import RequestTools
 
 
 class RegisterWindow(QWidget):
@@ -229,7 +230,7 @@ QMessageBox QLabel {
         data["school"]=school
         data["key"]=key
         data["email"]=email
-        res=HttpTool.post(PathConstant.REGISTER,data)
+        res=RequestTools.post_method(PathConstant.REGISTER,data)
         if res:
             self.save_key(key)
         # 提示注册成功
@@ -238,7 +239,8 @@ QMessageBox QLabel {
 
     def generate_code_image(self):
         # 图像数据,base64
-        data = HttpTool.get(PathConstant.GET_CAPTCHAIMAGE)
+        data = RequestTools.get_method(PathConstant.GET_CAPTCHAIMAGE)
+        # data = HttpTool.get(PathConstant.GET_CAPTCHAIMAGE)
         self.image = data["img"]
         self.uuid = data["uuid"]
 
@@ -259,6 +261,7 @@ QMessageBox QLabel {
     def save_key(self,key):
         # 获取用户账户目录的路径
         user_dir = os.path.expanduser("~")
+        # user_dir = 'D:\\'
 
         # 拼接文件路径
         file_path = os.path.join(user_dir, "key.key")

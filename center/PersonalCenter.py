@@ -4,6 +4,7 @@ from PyQt5.QtWidgets import QApplication, QWidget, QHBoxLayout, QSpacerItem, QSi
 from PyQt5.uic.properties import QtWidgets
 
 from center.StepCenter import StepCenter
+from config.GlobalConstant import GlobalConstant
 from myqt.QTreeWidgetItem import QTreeWidgetItem
 from myreqeust.HttpTool import HttpTool
 
@@ -19,7 +20,8 @@ class PersonCenter(QWidget):
         super().__init__()
         # self.menuData=RequestTools.get_method(PathConstant.GET_CHAPTER_LIST)
         # self.menuData=HttpTool.get(PathConstant.GET_CHAPTER_LIST)
-        self.menuData = JSONUtil.readJsonFile('center/CenterNode.json')["chapter"]
+        # self.menuData = JSONUtil.readJsonFile('center/CenterNode.json')["chapter"]
+        self.menuData = GlobalConstant.chapter
         self.initUI()
 
 

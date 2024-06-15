@@ -1,3 +1,5 @@
+import math
+
 import requests
 from PyQt5.QtWidgets import QApplication, QMainWindow, QLabel, QVBoxLayout, QSlider, QWidget, QHBoxLayout
 from PyQt5.QtGui import QPixmap, QImage, QPainter, QFont, QColor
@@ -57,12 +59,21 @@ class ImageDisplayWidget(QWidget):
         # 计算水印文字的位置
         text_width = painter.fontMetrics().width(text)
         text_height = painter.fontMetrics().height()
-        text_x = (self.pixmap.width() - text_width) // 2
-        text_y = (self.pixmap.height() - text_height) // 2
+        x_spacing = (self.pixmap.width() - text_width * math.sqrt(2)) / 3
+        y_spacing = (self.pixmap.width() - text_width * math.sqrt(2)) / 3
+        # text_x = (self.pixmap.width() - text_width) // 2
+        # text_y = (self.pixmap.height() - text_height) // 2
 
         # 在图片上绘制水印文字
         if not GlobalConstant.IS_ADMIN:
-            painter.drawText(text_x, text_y, text)
+            # painter.drawText(text_x, text_y, text)
+            for i in range(3):
+                for j in range(4):
+                    x = j * x_spacing + text_width* math.sqrt(2) // 2
+                    y = i * y_spacing + text_width * math.sqrt(2)// 2
+                    painter.drawText(int(x), int(y), text)
+
+
         painter.drawText(self.pixmap.width() - painter.fontMetrics().width("北邮考研"), text_height, "北邮考研")
         painter.drawText(self.pixmap.width() - painter.fontMetrics().width("Q:3792836192"), 2 * text_height,
                          "Q:3792836192")

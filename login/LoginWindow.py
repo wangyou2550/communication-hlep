@@ -130,10 +130,12 @@ class LoginWindow(QWidget):
         user["code"] = self.code_input.text()
         user["uuid"]=self.uuid
         user["key"]=str(self.generate_otp(self.load_key()))
+        print("key:"+str(self.generate_otp(self.load_key())))
         data=RequestTools.post_method(PathConstant.LOGIN,user)
         # data=HttpTool.post(PathConstant.LOGIN,user)
         # 存token
         if data:
+            print(data)
             HttpTool.save_token(data["token"])
             HttpTool.token=data["token"]
             self.save_user_info()
@@ -155,6 +157,7 @@ class LoginWindow(QWidget):
     def load_key(self):
         # 获取用户账户目录的路径
         user_dir = os.path.expanduser("~")
+        # user_dir = 'D:\\'
         # 拼接文件路径
         file_path = os.path.join(user_dir, "key.key")
         with open(file_path, "r") as file:

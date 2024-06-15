@@ -84,6 +84,8 @@ class MultipleChoiceQuestion(QMainWindow):
                 self.current_index=index
             self.set_problem_index.emit(self.current_index)
             self.question=self.questions[self.current_index]
+            self.ffe_widget.updateDataAndProblemId(HttpTool.get(PathConstant.GET_PROBLEM_FEEDBACK_FAVORITE+str(self.question["id"])),self.question["id"])
+
             #更新主题部分
             self.question_widget.set_image(self.question["imageSrc"])
             #更新选项

@@ -30,14 +30,6 @@ class StepTableWidget(QWidget):
             self.tableWidget.setColumnCount(5)
             self.tableWidget.setHorizontalHeaderLabels(["ID", "名称", "评论","错误原因", "查询"])  # 设置列标题
 
-        # 设置表格样式
-        # self.tableWidget.setStyleSheet(
-        #     "QTableWidget { border: 1px solid #ccc; border-collapse: collapse; }"
-        #     "QTableWidget::item { padding: 10px; }"
-        #     "QHeaderView::section { background-color: #f0f0f0; border: 1px solid #ccc; }"
-        #     "QPushButton { background-color: #4CAF50; color: white; border: none; padding: 5px 10px; font-size: 12px; }"
-        #     "QPushButton:hover { background-color: #45a049; }"
-        # )
 
         # 设置表格列宽自动调整
         # 创建 QScrollArea
@@ -84,7 +76,7 @@ class StepTableWidget(QWidget):
             # 创建查询按钮
             query_button = QPushButton("查询")
             query_button.clicked.connect(lambda _, row=row: self.queryData(row))
-            if self.type<2:
+            if self.type<=2:
                 self.tableWidget.setItem(row, 0, QTableWidgetItem(str(item['id'])))
                 self.tableWidget.setItem(row, 1, QTableWidgetItem(item['name']))
                 self.tableWidget.setCellWidget(row, 3, query_button)
@@ -92,7 +84,7 @@ class StepTableWidget(QWidget):
                 self.tableWidget.setItem(row, 0, QTableWidgetItem(str(item['problemId'])))
                 self.tableWidget.setItem(row, 1, QTableWidgetItem(item['problemName']))
                 if item['exercise']:
-                    self.tableWidget.setItem(row, 3, QTableWidgetItem(str(item['exercise'])))
+                    self.tableWidget.setItem(row, 3, QTableWidgetItem(str(item['errorReason'])))
                 self.tableWidget.setCellWidget(row, 4, query_button)
 
     def queryData(self, row):

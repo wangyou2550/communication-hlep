@@ -17,6 +17,10 @@ class FFE_Widget(QWidget):
 
     def initUI(self):
        self.create_feed_favorite_button()
+
+    def updateDataAndProblemId(self,data,problem_id):
+        self.data=data;
+        self.problem_id=problem_id;
     def create_feed_favorite_button(self):
         layout = QHBoxLayout()
 
@@ -55,9 +59,10 @@ class FFE_Widget(QWidget):
     def feedbackClicked(self):
         self.feedback_value = 1-self.feedback_value
         if self.data:
-            self.data["problemId"] = self.problem_id
+            # 有值只更新值
             self.data["feedback"] = self.feedback_value
         else:
+            self.data["problemId"] = self.problem_id
             self.data["feedback"] = self.feedback_value
 
         # //取消反馈，直接点击就可以
@@ -70,10 +75,13 @@ class FFE_Widget(QWidget):
 
     # 标记题是否做了
     def onComboBoxIndexChanged(self, index):
-        if self.data:
-            self.data["problemId"] = self.problem_id
+        if not self.data["exercise"] and index==0:
+            return
+        if self.data["exercise"]:
+            # 有值就不赋值题目id
             self.data["exercise"] = index
         else:
+            self.data["problemId"] = self.problem_id
             self.data["exercise"] = index
 
         # //取消反馈，直接点击就可以
