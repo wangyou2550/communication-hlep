@@ -1,6 +1,7 @@
 class PathConstant:
-    DNS = "http://localhost:30504/"
-    # DNS = "http://39.105.200.100:30999/"
+    # DNS = "http://localhost:30504/"
+    DNS = "http://39.105.200.100:30999/"
+    HEAD_IMAGE_URL="http://39.105.200.100:30997/images/软件首页.png"
     # chapter
     GET_CHAPTER_LIST=DNS+"communication/chapter/list"
     GET_PAST_PAPER_LIST=DNS+"communication/chapter/pastpaper/list"

@@ -1,5 +1,5 @@
 class GlobalConstant:
-    IS_ADMIN=False
+    IS_ADMIN=True
     PAGE_SIZE=10
     chapter=[
         {"id": 1,

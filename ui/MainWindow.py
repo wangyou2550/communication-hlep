@@ -1,10 +1,12 @@
 import os
 
-from PyQt5.QtGui import QIcon
+import requests
+from PyQt5.QtGui import QIcon, QPixmap
 from PyQt5.QtWidgets import QMainWindow, QAction, QLabel
 
 from center.PersonalCenter import PersonCenter
 from communication.HomePage import Home_Page
+from myreqeust.PathConstant import PathConstant
 from question.ExercisePage import ExercisePage
 from question.PastPaperPage import PastPaperPage
 
@@ -68,7 +70,14 @@ class MainWindow(QMainWindow):
 
     def showHomeWidget(self):
         # 创建一个初始的 widget
-        self.widget = QLabel("欢迎使用主页面")
+        self.widget = QLabel()
+        response = requests.get(PathConstant.HEAD_IMAGE_URL)
+        if response.status_code == 200:
+            image_data = response.content
+            pixmap = QPixmap()
+            pixmap.loadFromData(image_data)
+            self.widget.setPixmap(pixmap)
+
         self.setCentralWidget(self.widget)
 
     def showKnowledgeWidget(self):
