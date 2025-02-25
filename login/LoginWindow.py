@@ -43,6 +43,9 @@ class LoginWindow(QWidget):
         self.password_input.setEchoMode(QLineEdit.Password)
         layout.addWidget(self.password_input)
 
+        self.password_input.setText("123")
+        self.username_input.setText("yy")
+
         # self.code_input = QLineEdit()
         # self.code_input.setPlaceholderText('验证码')
         # layout.addWidget(self.code_input)

@@ -9,6 +9,8 @@ from communication.HomePage import Home_Page
 from myreqeust.PathConstant import PathConstant
 from question.ExercisePage import ExercisePage
 from question.PastPaperPage import PastPaperPage
+from skill.KnowledgeSkillManager import KnowledgeSkillManager
+from skill.SkillPage import SkillPage
 
 
 class MainWindow(QMainWindow):
@@ -99,5 +101,7 @@ class MainWindow(QMainWindow):
     def showMockExamWidget(self):
         print(1)
 
+     # 展示技巧首页
     def showTipsWidget(self):
-        print(1)
+        self.sikllPage=SkillPage()
+        self.setCentralWidget(self.sikllPage)

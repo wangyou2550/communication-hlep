@@ -18,23 +18,23 @@ from myreqeust.HttpTool import HttpTool
 from myreqeust.PathConstant import PathConstant
 
 
-class RelQuetionDialog(QDialog):
-    def __init__(self,question_id):
+class SkillRelQuetionDialog(QDialog):
+    def __init__(self, skill_id):
         super().__init__()
-        self.question_id=question_id
+        self.skill_id=skill_id
         self.relationQuestionId=-1
         self.setupUi()
         self.setWindowModality(Qt.ApplicationModal)
     def setupUi(self):
         # Dialog.setObjectName("Dialog")
-        self.resize(800, 800)
+        self.resize(1100, 800)
         self.buttonBox = QtWidgets.QDialogButtonBox(self)
         self.buttonBox.setGeometry(QtCore.QRect(320, 550, 341, 32))
         self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
         self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.horizontalLayoutWidget_4 = QtWidgets.QWidget(self)
-        self.horizontalLayoutWidget_4.setGeometry(QtCore.QRect(40, 40, 561, 80))
+        self.horizontalLayoutWidget_4.setGeometry(QtCore.QRect(40, 40, 800, 80))
         self.horizontalLayoutWidget_4.setObjectName("horizontalLayoutWidget_4")
         self.horizontalLayout_4 = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget_4)
         self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
@@ -73,13 +73,16 @@ class RelQuetionDialog(QDialog):
         self.search_button = QtWidgets.QPushButton(self.horizontalLayoutWidget_4)
         self.search_button.setObjectName("search_button")
         self.search_button.clicked.connect(self.search_question)
+        # self.rel_button = QtWidgets.QPushButton(self.horizontalLayoutWidget_4)
+        self.rel_button = QtWidgets.QPushButton()
+        self.rel_button.clicked.connect(self.rel_step_question_search)
         self.horizontalLayout.addWidget(self.search_button)
         self.horizontalLayout_4.addLayout(self.horizontalLayout)
         self.qustion_listWidget = QtWidgets.QListWidget(self)
         self.qustion_listWidget.setGeometry(QtCore.QRect(20, 130, 111, 421))
         self.qustion_listWidget.setObjectName("qustion_listWidget")
         self.image_label = QtWidgets.QLabel(self)
-        self.image_label.setGeometry(QtCore.QRect(150, 150, 700, 700))
+        self.image_label.setGeometry(QtCore.QRect(150, 150, 921, 321))
         self.image_label.setObjectName("image_label")
 
         self.retranslateUi(self)
@@ -110,21 +113,31 @@ class RelQuetionDialog(QDialog):
         self.label_3.setText(_translate("Dialog", "章"))
         self.title_label.setText(_translate("Dialog", "题目名称"))
         self.search_button.setText(_translate("Dialog", "搜索"))
+        self.rel_button.setText(_translate("Dialog", "关联搜索"))
         self.image_label.setText(_translate("Dialog", "TextLabel"))
 
     def search_question(self):
         data={}
-        data["question_id"]=self.question_id
+        data["question_id"]=self.skill_id
         data["name"]=self.title_line_edit.text()
         data["type"]=str(self.type_comboBox.currentIndex())
         data["chapter"]=self.chapter_comboBox.itemData(self.chapter_comboBox.currentIndex())
+        self.qustion_listWidget.clear()
         self.questions=HttpTool.get(PathConstant.QUERY_QUESTION_LIST,data)
         # 创建一个字符串列表模型
         if self.questions:
             for question in self.questions:
                 self.qustion_listWidget.addItem(StepListWidgetItem(question["name"], question["id"], question["imageSrc"]))
             self.qustion_listWidget.itemClicked.connect(self.image_display)
-
+# 查找知识点关联的题
+    def rel_step_question_search(self):
+        self.qustion_listWidget.clear()
+        url=PathConstant.GET_SKILL_RELATION_STEP_QUESTION.replace("{id}",str(self.skill_id))
+        self.questions = HttpTool.get(url)
+        if self.questions:
+            for question in self.questions:
+                self.qustion_listWidget.addItem(StepListWidgetItem(question["name"], question["id"], question["imageSrc"]))
+            self.qustion_listWidget.itemClicked.connect(self.image_display)
 
     def image_display(self, item):
         image_path = item.image_src  # 获取按钮的文本
@@ -140,8 +153,11 @@ class RelQuetionDialog(QDialog):
     def add_question(self):
         if self.relationQuestionId!=-1:
             data={}
-            data["questionId"]=self.question_id
-            data["relationQuestionId"]=self.relationQuestionId
+            data["skillId"]=self.skill_id
+            data["questionId"]=self.relationQuestionId
+            self.question=[item for item in self.questions if item.id == self.relationQuestionId]
+            data["questionName"]=self.question[0]["name"]
+            data["questionType"]=self.question[0]["type"]
             HttpTool.post(PathConstant.ADD_REL_QUESTION,data)
         self.accept()
         

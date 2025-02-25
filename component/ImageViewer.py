@@ -24,7 +24,7 @@ class ImageViewer(QGraphicsView):
         self.pixmap = QPixmap.fromImage(image)
         self.image_item = self.scene.addPixmap(self.pixmap)
         # 获取水印文字
-        self.add_watermark(HttpTool.user["userName"]+str(HttpTool.user["phonenumber"]))
+        # self.add_watermark(HttpTool.user["userName"]+str(HttpTool.user["phonenumber"]))
 
         # 设置初始缩放因子
         self.scale_factor = 1.0

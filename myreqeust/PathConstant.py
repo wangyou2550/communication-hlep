@@ -38,6 +38,7 @@ class PathConstant:
     '''
     # QUERY_QUESTION_LIST=DNS+"communication/question/list?chapter="
     QUERY_QUESTION_LIST=DNS+"communication/question/list"
+    QUERY_QUESTION=DNS+"communication/question/query"
     ADD_QUESTION=DNS+"communication/question"
     QUERY_HINT=DNS+"communication/question/hint/"
     ADD_REL_SECTION=DNS+"communication/quetionRelSection"
@@ -59,3 +60,16 @@ class PathConstant:
     GET_INFO=DNS+"getInfo"
     REGISTER=DNS+"regist"
 
+    '''
+        skill相关
+        '''
+
+    GET_SKILL_LIST=DNS+"communication/skill/list"
+    POST_SKILL=DNS+"communication/skill"
+    GET_SKILL_BY_ID=DNS+"communication/skill/{id}"
+    GET_SKILL_QUESTION_BY_ID=DNS+"communication/skill/question/{id}"
+    GET_CHAPTER_SIMPLE_LIST=DNS+"communication/chapter/simple/list"
+    POST_SKILL_RELATION_STEP=DNS+"communication/skill/step"
+    POST_SKILL_RELATION_QUESTION=DNS+"communication/skill/question"
+    GET_SKILL_RELATION_STEP_QUESTION=DNS+"communication/skill/step/question/{id}"
+    GET_SKILL_RELATION_STEP=DNS+"communication/skill/step/"

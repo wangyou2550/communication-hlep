@@ -1,7 +1,7 @@
 
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import sys
-from communication.HomePage import Home_Page
+
 from login.LoginWindow import LoginWindow
 from ui.MainWindow import MainWindow
 if __name__ == '__main__':
